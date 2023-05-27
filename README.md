@@ -46,8 +46,8 @@ then click on run.
 b) To run using docker-compose : 
 
     - Open the terminal and go to automation-example folder
-    - Run "docker-compose up" command to run the hub and the nodes
-    - Select allTestsRemote.xml file under suite folfer, right click and then click on run.
+    - Run "docker-compose up -d" command to run the hub and the nodes
+    - Select allTestsRemote.xml file under suite folder, right click and then click on run.
     - Note that parameter name="type" with value="remote" should be set instead of value="local"
 
 **Report**
