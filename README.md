@@ -3,7 +3,6 @@
 ![technology Java](https://img.shields.io/badge/technology-Java-olive.svg)
 ![technology Maven](https://img.shields.io/badge/technology-Maven-green.svg)
 ![technology Selenium](https://img.shields.io/badge/technology-Selenium-green.svg)
-![technology Maven](https://img.shields.io/badge/technology-RestAssured-green.svg)
 
 This repository contains a web ui automation example project.
 The tests were develop in Java with Maven using Selenium for the user interface validations.
