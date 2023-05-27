@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="Search product test">
+    <parameter name="environment" value="dev"/>
+    <parameter name="browser" value="chrome"/>
+    <parameter name="headlessMode" value="false"/>
+    <parameter name="type" value="local"/>
+    <test name="Search product in searchbox" preserve-order="true">
+        <classes>
+            <class name="test.SearchProduct"/>
+        </classes>
+    </test> <!-- Test -->
+</suite> <!-- Suite -->
