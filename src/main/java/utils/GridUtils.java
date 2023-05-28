@@ -8,7 +8,7 @@ import java.util.List;
 
 public class GridUtils {
 
-    public static WebElement getElementAt(int row, int col, String p, String p2, WebDriver driver) {
+    public static WebElement getElementAt(int row, int col,WebDriver driver) {
         return driver.findElement(By.xpath("//table/tbody/tr[" + row + "]/td[" + col + "]"));
     }
 
