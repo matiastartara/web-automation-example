@@ -62,4 +62,15 @@ public final class WaitUtils {
         });
     }
 
+    public static void waitToContainXElements(WebDriver driver, By selector, int count) {
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(maxWait));
+        wait.until((ExpectedCondition<Boolean>) driver1 -> {
+            int elementCount = driver1.findElements(selector).size();
+            if (elementCount >= count)
+                return true;
+            else
+                return false;
+        });
+    }
+
 }
