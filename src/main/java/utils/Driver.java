@@ -1,9 +1,11 @@
 package utils;
 
-import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.edge.EdgeOptions;
+import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
@@ -40,7 +42,8 @@ public class Driver {
                             chromeOptions.addArguments("--allow-insecure-localhost");
                         }
 
-                        driver.set(WebDriverManager.chromedriver().capabilities(chromeOptions).create());
+                        driver.set(new ChromeDriver(chromeOptions));
+                        //driver.set(WebDriverManager.chromedriver().capabilities(chromeOptions).create());
                     }
                     break;
 
@@ -60,7 +63,8 @@ public class Driver {
                             firefoxOptions.addArguments("--no-sandbox");
                         }
 
-                        driver.set(WebDriverManager.firefoxdriver().capabilities(firefoxOptions).create());
+                        driver.set(new FirefoxDriver(firefoxOptions));
+                        //driver.set(WebDriverManager.firefoxdriver().capabilities(firefoxOptions).create());
                     }
                     break;
 
@@ -74,7 +78,8 @@ public class Driver {
                         edgeOptions.addArguments("--no-sandbox");
                     }
 
-                    driver.set(WebDriverManager.edgedriver().capabilities(edgeOptions).create());
+                    //driver.set(WebDriverManager.edgedriver().capabilities(edgeOptions).create());
+                    driver.set(new EdgeDriver(edgeOptions));
                     break;
 
                 default:
