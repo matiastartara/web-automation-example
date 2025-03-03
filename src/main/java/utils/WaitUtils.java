@@ -1,5 +1,7 @@
 package utils;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.*;
 
@@ -9,6 +11,7 @@ import java.util.List;
 public final class WaitUtils {
 
     private static final int maxWait = 40;
+    protected static Logger logger = LogManager.getLogger();
 
     public static void waitForElementClickable(WebDriver driver, WebElement e) {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(maxWait));
@@ -28,6 +31,7 @@ public final class WaitUtils {
                 webElementPresence = true;
 
         } catch (Exception e) {
+            logger.info("Error waiting for element : " + e.getMessage());
             throw e;
         }
 
@@ -39,12 +43,18 @@ public final class WaitUtils {
                 driver1 -> elements.stream().anyMatch(x -> x.getText().equals(optionText)));
     }
 
-    public static void waitForNotEmptyList(WebDriver driver, By locator) {
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(maxWait));
-        wait.until((ExpectedCondition<Boolean>) driver1 -> {
-            int elementCount = driver1.findElements(locator).size();
-            return (elementCount >= 1);
-        });
+    public static boolean waitForNotEmptyList(WebDriver driver, By locator) {
+        try {
+            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(maxWait));
+            wait.until((ExpectedCondition<Boolean>) driver1 -> {
+                int elementCount = driver1.findElements(locator).size();
+                return elementCount >= 1;
+            });
+            return true;
+        } catch (Exception e) {
+            logger.info("Error waiting for not empty list : " + e.getMessage());
+            return false;
+        }
     }
 
     public static void waitForLoad(WebDriver driver) {
