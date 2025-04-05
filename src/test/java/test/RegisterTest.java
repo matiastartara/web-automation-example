@@ -33,6 +33,8 @@ public class RegisterTest extends BaseTest {
 
         //Register new user
         test.log(Status.INFO,"Complete registration form");
+
+
         var registerPage = new RegisterPage(driver);
         var user = ElementUtils.generateString(10);
         var mail = ElementUtils.generateString(8);

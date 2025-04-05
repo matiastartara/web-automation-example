@@ -6,7 +6,6 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.Select;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.Random;
 
 public final class ElementUtils {
@@ -108,9 +107,32 @@ public final class ElementUtils {
     public static WebElement findFirstElementByText(List<WebElement> webElements, String text) {
         return webElements
                 .stream()
-                .filter(webElement -> StringUtils.equals(webElement.getText(),text))
+                .filter(webElement -> StringUtils.equals(webElement.getText(), text))
                 .findFirst()
                 .orElseThrow(() -> new NoSuchElementException("No WebElement found containing " + text));
+    }
+
+
+    /**
+     * Retrieves the value of an attribute as it is defined in the DOM.
+     *
+     * @return the static attribute value, ideal for attributes like class, id, name, etc.
+     */
+    public static String getDomAttribute(WebDriver driver, By by, String attribute) {
+        WebElement element = driver.findElement(by);
+        return element.getDomAttribute(attribute);
+    }
+
+
+    /**
+     * Retrieves the current property value of an element, reflecting its live state in the browser.
+     *
+     * @return the dynamic property value, useful for properties like 'value' in input fields that may change dynamically.
+     */
+
+    public static String getDomProperty(WebDriver driver, By by, String property) {
+        WebElement element = driver.findElement(by);
+        return element.getDomProperty(property);
     }
 
 }
