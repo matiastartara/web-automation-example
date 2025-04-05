@@ -2,8 +2,8 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
 <suite name="Register user test">
     <parameter name="environment" value="dev"/>
-    <parameter name="browser" value="edge"/>
-    <parameter name="headlessMode" value="true"/>
+    <parameter name="browser" value="chrome"/>
+    <parameter name="headlessMode" value="false"/>
     <parameter name="type" value="local"/>
     <test name="Register new user test" preserve-order="true">
         <classes>
