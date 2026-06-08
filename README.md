@@ -50,6 +50,16 @@ b) To run using docker-compose :
     - Select allTestsRemote.xml file under suite folder, right click and then click on run.
     - Note that parameter name="type" with value="remote" should be set instead of value="local"
 
+c) To run tests using Maven from command line:
+
+    - Open the terminal and go to automation-example folder
+    - Run the following command:
+    
+        mvn verify -PallTests
+
+    - This will execute all tests defined in allTests.xml using the maven-failsafe-plugin
+    - Reports will be generated under /target/failsafe-reports/emailable-report.html
+
 **Report**
 
 After running the tests using mvn the failsafe-reports will be displayed under
