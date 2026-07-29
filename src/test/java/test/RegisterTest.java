@@ -33,8 +33,6 @@ public class RegisterTest extends BaseTest {
 
         //Register new user
         test.log(Status.INFO,"Complete registration form");
-
-
         var registerPage = new RegisterPage(driver);
         var user = ElementUtils.generateString(10);
         var mail = ElementUtils.generateString(8);
@@ -50,5 +48,4 @@ public class RegisterTest extends BaseTest {
         Assert.assertEquals(driver.getTitle(),"Your Account Has Been Created!");
         Assert.assertTrue(driver.getCurrentUrl().contains("route=account/success"));
     }
-
 }

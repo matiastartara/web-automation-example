@@ -21,5 +21,4 @@ public class GridUtils {
         List<WebElement> TotalColsList = ToGetColumns.findElements(By.tagName("td"));
         return TotalColsList.size();
     }
-
 }

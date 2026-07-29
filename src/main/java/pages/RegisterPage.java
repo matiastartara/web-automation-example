@@ -73,5 +73,4 @@ public class RegisterPage extends BasePage {
         click(continueBtn);
         return this;
     }
-
 }

@@ -43,7 +43,6 @@ public class Driver {
                         }
 
                         driver.set(new ChromeDriver(chromeOptions));
-                        //driver.set(WebDriverManager.chromedriver().capabilities(chromeOptions).create());
                     }
                     break;
 
@@ -64,7 +63,6 @@ public class Driver {
                         }
 
                         driver.set(new FirefoxDriver(firefoxOptions));
-                        //driver.set(WebDriverManager.firefoxdriver().capabilities(firefoxOptions).create());
                     }
                     break;
 
@@ -78,14 +76,12 @@ public class Driver {
                         edgeOptions.addArguments("--no-sandbox");
                     }
 
-                    //driver.set(WebDriverManager.edgedriver().capabilities(edgeOptions).create());
                     driver.set(new EdgeDriver(edgeOptions));
                     break;
 
                 default:
                     throw new IllegalArgumentException("Browser [" + browser + "] is NOT supported");
             }
-
         }
 
         return driver.get();

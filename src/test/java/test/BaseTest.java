@@ -51,5 +51,4 @@ public class BaseTest extends ExtentReport {
             getTest().skip(result.getThrowable());
         }
     }
-
 }
