@@ -30,5 +30,4 @@ public class NavigationBar extends BasePage {
         e.click();
         return this;
     }
-
 }
