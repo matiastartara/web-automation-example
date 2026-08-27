@@ -23,6 +23,7 @@ A robust web UI automation testing project built in **Java 17** using **Selenium
   - [3. Using Docker Compose (Selenium Grid)](#3-using-docker-compose-selenium-grid)
   - [4. Using Dockerfile (Standalone Container)](#4-using-dockerfile-standalone-container)
 - [Execution Reports](#-execution-reports)
+- [AI-Assisted Exploration (Selenium MCP)](#-ai-assisted-exploration-selenium-mcp)
 
 ---
 
@@ -48,14 +49,14 @@ web-automation-example/
 ├── src/
 │   ├── main/
 │   │   ├── java/
-│   │   │   ├── page/            # Page Object classes (LoginPage, HomePage, etc.)
+│   │   │   ├── pages/           # Page Object classes (LoginPage, RegisterPage, HomePage, etc.)
 │   │   │   └── utils/           # Utilities (Driver, ExtentReport, Environment)
 │   │   └── resources/
 │   │       └── environment/     # Environment configurations (dev.example.properties template)
 │   └── test/
 │       └── java/
-│           ├── suite/           # TestNG XML suites (allTests.xml, allTestsRemote.xml)
-│           └── test/            # Test classes (BaseTest, RegisterTest, SearchProduct)
+│           ├── suite/           # TestNG XML suites (allTests.xml, loginTest.xml, allTestsRemote.xml)
+│           └── test/            # Test classes (BaseTest, LoginTest, RegisterTest, SearchProduct)
 └── reports/                     # Generated ExtentReports output
 ```
 
@@ -108,6 +109,8 @@ To prevent committing sensitive credentials to version control, environment file
 2. Create your local file: `src/main/resources/environment/dev.properties` (or `prod.properties`)
 3. Fill in your target application URL, username, and password.
 
+> `username`/`password` must match a **registered account** on the target site — `LoginTest` reads them via `Environment` (`e.username()` / `e.password()`) to run the positive login scenario, so no credentials are hardcoded in test code.
+
 To set the targeted environment during test execution, update the `environment` parameter in your TestNG XML suite file:
 
 ```xml
@@ -121,7 +124,7 @@ To set the targeted environment during test execution, update the `environment` 
 ### 1. From IDE (IntelliJ IDEA)
 
 1. Open `src/test/java/suite/`.
-2. Right-click on `allTests.xml` (or any other suite XML).
+2. Right-click on `allTests.xml` (or a single-test suite: `loginTest.xml`, `registerUserTest.xml`, `searchProductTest.xml`).
 3. Click **Run '.../allTests.xml'**.
 
 ---
@@ -199,3 +202,35 @@ After test execution completes, reports are generated in the following locations
 
 2. **Failsafe / TestNG Reports:**
    Path: `target/failsafe-reports/emailable-report.html` & `target/surefire-reports/index.html`.
+
+---
+
+## 🤖 AI-Assisted Exploration (Selenium MCP)
+
+This repo ships a `.mcp.json` at the root that wires up the [`@angiejones/mcp-selenium`](https://github.com/angiejones/mcp-selenium) MCP server:
+
+```json
+{
+  "mcpServers": {
+    "selenium": {
+      "command": "npx",
+      "args": ["-y", "@angiejones/mcp-selenium@latest"]
+    }
+  }
+}
+```
+
+It lets an MCP-compatible AI client (e.g. Claude Code) drive a real, visible browser session interactively — navigating pages, clicking, typing, and reading the `accessibility://current` resource to get real element locators. This is **exploration tooling, not part of the automated suite**: it's how new Page Objects get their locators discovered/verified against the live site before the actual TestNG test is written (e.g. `LoginPage`/`LoginTest` were built this way). It's never invoked by `mvn verify` or CI.
+
+* No manual install needed — `npx -y @angiejones/mcp-selenium@latest` fetches and runs the server on demand.
+* Your MCP client needs to approve/enable the `selenium` server once (in Claude Code this is tracked in `.claude/settings.local.json`; run `claude mcp list` to check connection status).
+
+### Basic usage (from Claude Code)
+
+1. **Start a browser:** ask Claude to open a session (`start_browser`, e.g. Chrome, non-headless so you can watch it).
+2. **Navigate:** point it at the page you want to inspect (`navigate` to a URL).
+3. **Read the locators:** have it read the `accessibility://current` resource — this returns the accessibility tree with roles, names, and ids, which is far more reliable than guessing CSS/XPath by eye.
+4. **Interact to confirm the flow:** use `interact`/`send_keys` to click and type through the flow (e.g. fill a login form) and check the resulting page/title/URL — this validates the locators actually work before they go into a Page Object.
+5. **Close the session** once you've got what you need (`close_session`).
+
+Then take the confirmed locators and write the real `pages/*Page.java` + `test/*Test.java` classes by hand — the MCP session itself is throwaway, nothing it does gets committed.
