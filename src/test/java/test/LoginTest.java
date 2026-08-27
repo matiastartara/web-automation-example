@@ -9,11 +9,10 @@ import pages.NavigationBar;
 
 public class LoginTest extends BaseTest {
 
-
     @Test
     public void loginWithValidCredentialsTest() {
 
-        ExtentTest test = extent.createTest("Login with valid credentials",
+        ExtentTest test = extent.createTest("Login with valid  credentials",
                 "Login using a registered email/password and land on My Account");
         testThread.set(test);
         test.log(Status.INFO, "Open url");
