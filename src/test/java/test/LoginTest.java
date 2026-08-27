@@ -9,6 +9,7 @@ import pages.NavigationBar;
 
 public class LoginTest extends BaseTest {
 
+
     @Test
     public void loginWithValidCredentialsTest() {
 
