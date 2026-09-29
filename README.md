@@ -233,4 +233,6 @@ It lets an MCP-compatible AI client (e.g. Claude Code) drive a real, visible bro
 4. **Interact to confirm the flow:** use `interact`/`send_keys` to click and type through the flow (e.g. fill a login form) and check the resulting page/title/URL — this validates the locators actually work before they go into a Page Object.
 5. **Close the session** once you've got what you need (`close_session`).
 
+This flow follows Selenium's official [AI agents guidance](https://www.selenium.dev/documentation/ai_agents/). The project-specific rules agents must follow (no `Thread.sleep`/implicit waits, `*Options` instead of `DesiredCapabilities`, locator preferences, verification loop) are in [`CLAUDE.md`](CLAUDE.md#selenium-rules-for-agents).
+
 Then take the confirmed locators and write the real `pages/*Page.java` + `test/*Test.java` classes by hand — the MCP session itself is throwaway, nothing it does gets committed.
