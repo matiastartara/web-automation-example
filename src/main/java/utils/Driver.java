@@ -7,7 +7,6 @@ import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.edge.EdgeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
-import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
 import java.net.MalformedURLException;
@@ -15,6 +14,8 @@ import java.net.URL;
 import java.util.Optional;
 
 public class Driver {
+
+    private static final String GRID_URL = "http://localhost:4444/wd/hub";
 
     private static ThreadLocal<WebDriver> driver = new ThreadLocal<>();
     public static WebDriver get(String browser,Boolean headlessMode,String type) throws MalformedURLException {
@@ -25,43 +26,37 @@ public class Driver {
 
             switch (browser) {
                 case "chrome":
+                    ChromeOptions chromeOptions = new ChromeOptions();
+                    if (headlessMode) {
+                        chromeOptions.addArguments("--start-maximized");
+                        chromeOptions.addArguments("--headless=new");
+                        chromeOptions.addArguments("--disable-gpu");
+                        chromeOptions.addArguments("--no-sandbox");
+                        chromeOptions.addArguments("--disable-dev-shm-usage");
+                        chromeOptions.addArguments("--allow-insecure-localhost");
+                    }
+
                     if (type.equals("remote")) {
                         //Using docker compose
-                        DesiredCapabilities chromeCapabilities = new DesiredCapabilities();
-                        chromeCapabilities.setCapability("browserName", "chrome");
-                        driver.set(new RemoteWebDriver(new URL("http://localhost:4444/wd/hub"), chromeCapabilities));
+                        driver.set(new RemoteWebDriver(new URL(GRID_URL), chromeOptions));
                     } else {
                         //Type local
-                        ChromeOptions chromeOptions = new ChromeOptions();
-                        if (headlessMode) {
-                            chromeOptions.addArguments("--start-maximized");
-                            chromeOptions.addArguments("--headless=new");
-                            chromeOptions.addArguments("--disable-gpu");
-                            chromeOptions.addArguments("--no-sandbox");
-                            chromeOptions.addArguments("--disable-dev-shm-usage");
-                            chromeOptions.addArguments("--allow-insecure-localhost");
-                        }
-
                         driver.set(new ChromeDriver(chromeOptions));
                     }
                     break;
 
                 case "firefox":
+                    FirefoxOptions firefoxOptions = new FirefoxOptions();
+                    if (headlessMode) {
+                        //Firefox uses -headless; --headless=new is a Chromium-only flag
+                        firefoxOptions.addArguments("-headless");
+                    }
+
                     if (type.equals("remote")) {
                         //Using docker compose
-                        DesiredCapabilities firefoxCapabilities = new DesiredCapabilities();
-                        firefoxCapabilities.setCapability("browserName", "firefox");
-                        driver.set(new RemoteWebDriver(new URL("http://localhost:4444/wd/hub"), firefoxCapabilities));
+                        driver.set(new RemoteWebDriver(new URL(GRID_URL), firefoxOptions));
                     } else {
                         //Type local
-                        FirefoxOptions firefoxOptions = new FirefoxOptions();
-                        if (headlessMode) {
-                            firefoxOptions.addArguments("--start-maximized");
-                            firefoxOptions.addArguments("--headless=new");
-                            firefoxOptions.addArguments("--disable-gpu");
-                            firefoxOptions.addArguments("--no-sandbox");
-                        }
-
                         driver.set(new FirefoxDriver(firefoxOptions));
                     }
                     break;
